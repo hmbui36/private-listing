@@ -6,8 +6,9 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./IIdentityVerifier.sol";
 
-contract PrivateListing is Ownable {
+contract PrivateListing is Ownable, IIdentityVerifier {
     mapping(uint40 => address[]) public privateListings;
     bytes4 public constant IID_IERC1155 = type(IERC1155).interfaceId;
     bytes4 public constant IID_IERC721 = type(IERC721).interfaceId;
@@ -41,22 +42,7 @@ contract PrivateListing is Ownable {
         }
     }
 
-    /**
-     *  @dev Check that a buyer is verified to purchase/bid
-     *
-     *  @param marketplaceAddress   The address of the marketplace
-     *  @param listingId            The listingId associated with this verification
-     *  @param identity             The identity to verify
-     *  @param tokenAddress         The tokenAddress associated with this verification
-     *  @param tokenId              The tokenId associated with this verification
-     *  @param requestCount         The number of items being requested to purchase/bid
-     *  @param requestAmount        The amount being requested
-     *  @param requestERC20         The erc20 token address of the amount (0x0 if ETH)
-     *  @param data                 Additional data needed to verify
-     *
-     */
-    function checkVerify(
-        address marketplaceAddress,
+    function verify(
         uint40 listingId,
         address identity,
         address tokenAddress,
@@ -65,12 +51,15 @@ contract PrivateListing is Ownable {
         uint256 requestAmount,
         address requestERC20,
         bytes calldata data
-    ) external view returns (bool) {
+    ) external returns (bool) {
         for (uint i = 0; i < privateListings[listingId].length; i++) {
             if (privateListings[listingId][i] == identity) {
                 return true;
             }
         }
         return false;
+    }
+   function supportsInterface(bytes4 interfaceId) view external returns (bool) {
+        return interfaceId == type(IIdentityVerifier).interfaceId;
     }
 }

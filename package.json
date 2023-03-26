@@ -1,7 +1,7 @@
 {
   "name": "nft-allowlist",
   "version": "1.0.0",
-  "description": "",
+  "description": "This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,5 +18,16 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.2",
     "dotenv": "^16.0.3"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmbui36/private-listing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hmbui36/private-listing/issues"
+  },
+  "homepage": "https://github.com/hmbui36/private-listing#readme"
 }
