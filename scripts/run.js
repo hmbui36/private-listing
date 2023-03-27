@@ -1,5 +1,5 @@
 const hre = require("hardhat");
-const nftmarketaddress = "0xcd3b766ccdd6ae721141f452c550ca635964ce71"
+
 
 async function main() {
 
@@ -10,8 +10,8 @@ async function main() {
     console.log("Contract deployed to: ", contract.address);
     
     console.log("Contract deployed by: ", owner.address, "\n");
-    console.log("erc721Holder: ", erc721Holder.address, "\n");
-    console.log("erc1155Holder: ", erc1155Holder.address, "\n");
+    console.log("erc721Holder: ", erc721Holder?.address, "\n");
+    console.log("erc1155Holder: ", erc1155Holder?.address, "\n");
 
     const erc721Factory = await hre.ethers.getContractFactory("ExampleERC721", owner);
     const erc721Contract = await erc721Factory.deploy();
@@ -48,8 +48,8 @@ async function main() {
     console.log("allow erc1155Holder to buy erc721 listing. \n")
 
     // Check eligibility of erc1155Holder
-    txn = await contract.connect(erc1155Holder).checkVerify(nftmarketaddress, 0, erc1155Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
-    console.log("checkVerify: ", txn, "\n", "erc1155Holder: ", erc1155Holder.address, "\n")
+    txn = await contract.connect(erc1155Holder).verify(0, erc1155Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
+    console.log("verify: ", txn, "\n", "erc1155Holder: ", erc1155Holder.address, "\n")
 
 
     // Should fail if erc1155Holder tries to create a private listing for erc721 which is not owned by erc1155Holder.
@@ -63,8 +63,8 @@ async function main() {
     await txn.wait()
     console.log("allow erc721Holder to buy erc1155 listing. \n")
     // Check eligibility of erc721Holder
-    txn = await contract.connect(erc721Holder).checkVerify(nftmarketaddress, 0, erc721Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
-    console.log("checkVerify: ", txn, "\n", "erc721Holder: ", erc721Holder.address, "\n")
+    txn = await contract.connect(erc721Holder).verify(0, erc721Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
+    console.log("verify: ", txn, "\n", "erc721Holder: ", erc721Holder.address, "\n")
 
     // Should fail if erc1155Holder tries to create a private listing for erc721 which is not owned by erc1155Holder.
     // txn = await contract.connect(erc721Holder).addPrivateListingAddresses(0, erc1155Contract.address, 0, [erc721Holder.address]);
@@ -75,12 +75,12 @@ async function main() {
     await txn.wait()
     console.log("allow erc721Holder and erc1155Holder to buy erc721 listing. \n")
     // Check eligibility of erc721Holder
-    txn = await contract.connect(erc721Holder).checkVerify(nftmarketaddress, 0, erc721Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
-    console.log("checkVerify: ", txn, "\n", "erc721Holder: ", erc721Holder.address, "\n")
+    txn = await contract.connect(erc721Holder).verify(0, erc721Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
+    console.log("verify: ", txn, "\n", "erc721Holder: ", erc721Holder.address, "\n")
 
     // Check eligibility of erc1155Holder
-    txn = await contract.connect(erc1155Holder).checkVerify(nftmarketaddress, 0, erc1155Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
-    console.log("checkVerify: ", txn, "\n", "erc1155Holder: ", erc1155Holder.address, "\n")
+    txn = await contract.connect(erc1155Holder).verify(0, erc1155Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
+    console.log("verify: ", txn, "\n", "erc1155Holder: ", erc1155Holder.address, "\n")
 }
 
 main()

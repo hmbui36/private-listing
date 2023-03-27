@@ -51,7 +51,7 @@ contract PrivateListing is Ownable, IIdentityVerifier {
         uint256 requestAmount,
         address requestERC20,
         bytes calldata data
-    ) external override(IIdentityVerifier) returns (bool) {
+    ) external override(IIdentityVerifier) view returns (bool) {
         for (uint256 i = 0; i < privateListings[listingId].length; i++) {
             if (privateListings[listingId][i] == identity) {
                 return true;

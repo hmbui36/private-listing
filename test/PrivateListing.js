@@ -34,18 +34,17 @@ describe("Manifold ERC721 Private Listing", function () {
     expect(txn).to.equal(erc721Holder.address);
 
     txn = await erc1155Contract.balanceOf(erc1155Holder.address, 0);
-    expect(txn).to.greaterThan(0);
+    expect(parseInt(txn)).to.greaterThan(0);
   });
 
   it("happy path, ERC721 holder creates a private listing, which allows erc1155 holder to buy the erc721 listing.", async function () {
     
     // ERC721Holder creates a private listing, which allows erc1155Holder to buy the erc721 listing.
     txn = await contract.connect(erc721Holder).addPrivateListingAddresses(0, erc721Contract.address, 0, [erc1155Holder.address]);
-    await txn.wait()
+    await txn.wait();
 
     // Check eligibility of erc1155Holder should return true
-    txn = await contract.connect(erc1155Holder).verify(0, erc1155Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[])
-    await txn.wait()
+    txn = await contract.connect(erc1155Holder).verify(0, erc1155Holder.address, "0x0000000000000000000000000000000000000000", 0, 0, 0, "0x0000000000000000000000000000000000000000",[]);
     expect(txn).to.equal(true);
   });
 
