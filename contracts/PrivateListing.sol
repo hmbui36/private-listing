@@ -37,7 +37,7 @@ contract PrivateListing is Ownable, IIdentityVerifier {
             );
         }
 
-        for (uint i = 0; i < addresses.length; i++) {
+        for (uint256 i = 0; i < addresses.length; i++) {
             privateListings[listingId].push(addresses[i]);
         }
     }
@@ -51,15 +51,24 @@ contract PrivateListing is Ownable, IIdentityVerifier {
         uint256 requestAmount,
         address requestERC20,
         bytes calldata data
-    ) external returns (bool) {
-        for (uint i = 0; i < privateListings[listingId].length; i++) {
+    ) external override(IIdentityVerifier) returns (bool) {
+        for (uint256 i = 0; i < privateListings[listingId].length; i++) {
             if (privateListings[listingId][i] == identity) {
                 return true;
             }
         }
         return false;
     }
-   function supportsInterface(bytes4 interfaceId) view external returns (bool) {
-        return interfaceId == type(IIdentityVerifier).interfaceId;
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        virtual
+        override(IERC165)
+        view
+        returns (bool)
+    {
+        return
+            interfaceId == type(IIdentityVerifier).interfaceId ||
+            interfaceId == type(IERC165).interfaceId;
     }
 }
